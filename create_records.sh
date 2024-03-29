@@ -42,6 +42,11 @@ echo $INITIAL_DATA | jq
 # Create a record for each URL in the list
 for FQDN in $DNS_RECORDS; do
 
+    # if FQDN matches the pattern, then we skip it
+    if [[ $FQDN =~ bunnyenv.com$ ]]; then
+        echo "Skipping $FQDN"
+        continue
+    fi
     echo "creating record: $FQDN"
 
     # remove the domain name from the FQDN
