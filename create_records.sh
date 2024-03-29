@@ -21,7 +21,7 @@ echo $DNS_RECORDS
 
 echo "Retrieving initial settings"
 
-INITIAL_SETTINGS=$(curl -s -S --request --fail GET \
+INITIAL_SETTINGS=$(curl -s -S --fail --request GET \
     --url https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/cfd_tunnel/$CF_TUNNEL_ID/configurations \
     --header "Content-Type: application/json" \
     --header "Authorization: Bearer $CF_API_KEY")
@@ -49,7 +49,7 @@ for FQDN in $DNS_RECORDS; do
     echo "RECORD_NAME: $RECORD_NAME"
 
 
-    CREATE_RESULT=$(curl -s -S --request --fail POST \
+    CREATE_RESULT=$(curl -s -S --fail --request POST \
         --url https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/dns_records \
         --header 'Content-Type: application/json' \
         --header "Authorization: Bearer $CF_API_KEY" \
@@ -67,7 +67,7 @@ done
 # Lastly, we can run this command which will make sure all the records stay:
 echo "preserving initial settings"
 
-FINAL_RESULT=$(curl -s -S --request --fail PUT \
+FINAL_RESULT=$(curl -s -S --fail --request PUT \
     --url https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/cfd_tunnel/$CF_TUNNEL_ID/configurations \
     --header 'Content-Type: application/json' \
     --header "Authorization: Bearer $CF_API_KEY" \
