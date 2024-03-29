@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-"${COMPONENTS:?Variable not set}"
+#"${COMPONENTS:?Variable not set}"
 
 "${CF_API_KEY:?Variable not set}"
 "${CF_ACCOUNT_ID:?Variable not set}"
@@ -9,7 +9,7 @@ set -euo pipefail
 "${CF_ZONE_ID:?Variable not set}"
 
 
-printenv | grep -v COMPONENTSASDFASDf
+printenv | grep -v COMPONENTS
 DNS_RECORDS=$(echo $COMPONENTS | cut -d'|' -f2- | jq 'to_entries | map({key, value: .value.ingress.hosts[].hostname}) | .[].value')
 
 echo "DNS records that need to be created:"
