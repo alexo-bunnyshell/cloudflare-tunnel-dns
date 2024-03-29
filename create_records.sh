@@ -10,7 +10,7 @@ set -euo pipefail
 
 
 printenv | grep -v COMPONENTS
-DNS_RECORDS=$(echo $COMPONENTS | cut -d'|' -f2- | jq 'to_entries | map({key, value: .value.ingress.hosts[].hostname}) | .[].value')
+DNS_RECORDS=$(echo $COMPONENTS | cut -d'|' -f2- | jq --raw-output 'to_entries | map({key, value: .value.ingress.hosts[].hostname}) | .[].value')
 
 echo "DNS records that need to be created:"
 echo $DNS_RECORDS
