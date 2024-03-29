@@ -1,8 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 
-## finalscript
-
 "${COMPONENTS:?Variable not set}"
 
 "${CF_API_KEY:?Variable not set}"
@@ -28,6 +26,11 @@ INITIAL_SETTINGS=$(curl -s -S --request --fail GET \
     --header "Content-Type: application/json" \
     --header "Authorization: Bearer $CF_API_KEY")
 
+if [ $? -ne 0 ]; then
+  echo "Failed to retrieve initial settings" >&2
+  exit 1
+fi
+
 INITIAL_DATA=$(echo $INITIAL_SETTINGS | jq '.result.config')
 
 echo "Initial settings:"
@@ -52,7 +55,12 @@ for FQDN in $DNS_RECORDS; do
         --header "Authorization: Bearer $CF_API_KEY" \
         --data "{ \"type\": \"CNAME\", \"name\": \"${RECORD_NAME}\", \"content\": \"${CF_TUNNEL_ID}.cfargotunnel.com\", \"proxied\": true }")
 
-    echo "CREATED $FQDN"
+    if [ $? -ne 0 ]; then
+        echo "Failed to create record for $FQDN" >&2
+        echo "CREATE_RESULT: $CREATE_RESULT" >&2
+    else
+        echo "CREATED $FQDN"
+    fi
 
 done
 
@@ -64,3 +72,8 @@ FINAL_RESULT=$(curl -s -S --request --fail PUT \
     --header 'Content-Type: application/json' \
     --header "Authorization: Bearer $CF_API_KEY" \
     --data-raw "{ \"config\":  ${INITIAL_DATA}  }"    )
+
+if [ $? -ne 0 ]; then
+  echo "Failed to persist initial settings" >&2
+  exit 1
+fi
