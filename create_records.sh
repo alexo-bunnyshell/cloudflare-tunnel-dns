@@ -3,10 +3,10 @@ set -euo pipefail
 
 #"${COMPONENTS:?Variable not set}"
 
-"${CF_API_KEY:?Variable not set}"
-"${CF_ACCOUNT_ID:?Variable not set}"
-"${CF_TUNNEL_ID:?Variable not set}"
-"${CF_ZONE_ID:?Variable not set}"
+#"${CF_API_KEY:?Variable not set}"
+#"${CF_ACCOUNT_ID:?Variable not set}"
+#"${CF_TUNNEL_ID:?Variable not set}"
+#"${CF_ZONE_ID:?Variable not set}"
 
 
 printenv | grep -v COMPONENTS
