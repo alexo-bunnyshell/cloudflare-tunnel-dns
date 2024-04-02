@@ -10,7 +10,7 @@ if [[ -n "${CF_API_KEY}" && -n "${CF_EMAIL}" ]]; then
 elif [[ -n "${CF_API_TOKEN}" ]]; then
   echo "using CF_API_TOKEN for authentication"
   #AUTHORIZATION_HEADER="--header 'Authorization: Bearer $CF_API_KEY'"
-  AUTHORIZATION_HEADER=(--header "Authorization: Bearer $CF_API_KEY")
+  AUTHORIZATION_HEADER=(--header "Authorization: Bearer $CF_API_TOKEN")
 else
   echo "(CF_API_KEY, CF_EMAIL) or CF_API_TOKEN must be set" >&2
   exit 1
